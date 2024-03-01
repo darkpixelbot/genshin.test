@@ -1,1 +1,4 @@
-
+pip install telethon
+pip install pymongo
+pip install TelegramApi
+pip install pyTelegramApi
