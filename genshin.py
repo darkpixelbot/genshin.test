@@ -2,8 +2,10 @@ from telethon import TelegramClient, events, Button
 from pymongo import MongoClient
 import random
 import types
-from datetime import datetime
+from datetime import datetime'
 
+API_TOKEN = '6600246243:AAGu8f5rXaHPnFt-Uh0oRtQ8Ehvi3RzOlKY'
+DB_URI = 'postgresql://postgres:A3AGb*Ac-GfGd5DA1b36DDCa*6G4b2c*@monorail.proxy.rlwy.net:18783/railway'
 api_id = '26918101'
 api_hash = '57d6680f6549e21aca4e93c7a4221d29'
 bot_token = '6600246243:AAGu8f5rXaHPnFt-Uh0oRtQ8Ehvi3RzOlKY'
