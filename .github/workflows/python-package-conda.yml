@@ -1,0 +1,59 @@
+from telethon import TelegramClient, events
+import asyncio
+import time
+
+# Define your API ID and API hash here
+API_ID = 24834985
+API_HASH = "d26483c8776f7e89b39690994e1c5fe5"
+
+# Bot's ID
+BOT_ID = 572621020
+
+# Create a TelegramClient instance
+client = TelegramClient('session_name', API_ID, API_HASH)
+
+
+# Dictionary to store pinned messages along with their chat IDs
+pinned_messages = {}
+
+
+@client.on(events.NewMessage(incoming=True))
+async def handle_messages(event):
+    if event.is_private:
+        return
+
+    # Check if the message contains the "pin" command and is a reply
+    if "pin" in event.message.text.lower() and event.reply_to:
+        # Get the replied message
+        replied_msg = await event.get_reply_message()
+
+        # Ensure the replied message is not None
+        if replied_msg:
+            # Ensure the replied message is from the bot
+            if replied_msg.sender_id == BOT_ID:
+                # Pin the replied message and add it to the dictionary
+                pinned_message = await replied_msg.pin()
+                pinned_messages[event.chat_id] = pinned_message
+
+                # Schedule automatic unpinning
+                await asyncio.to_thread(schedule_unpin, event.chat_id)
+
+
+def schedule_unpin(chat_id):
+    # Unpin the message after 10 minutes
+    time.sleep(600)  # 10 minutes
+    pinned_message = pinned_messages.get(chat_id)
+    if pinned_message:
+        pinned_message.unpin()
+
+
+async def main():
+    # Start the client
+    await client.start()
+    # Run the client until Ctrl+C is pressed
+    await client.run_until_disconnected()
+
+
+if __name__ == '__main__':
+    # Run the main function
+    asyncio.run(main())
